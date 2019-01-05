@@ -6,6 +6,9 @@ set -e
 befor_dir=tikv2
 after_dir=tikv
 
+(cd $befor_dir && (cargo bench --bench misc 2&>1 | tee -a ../misc-before.txt))
+(cd $after_dir && (cargo bench --bench misc 2&>1 | tee -a ../misc-after.txt))
+
 (cd $befor_dir && cargo bench --bench raftstore -- --save-baseline raftstore-before)
 (cd $after_dir && cargo bench --bench raftstore -- --save-baseline raftstore-after)
 
@@ -15,5 +18,3 @@ after_dir=tikv
 (cd $befor_dir && cargo bench --bench hierarchy -- --save-baseline hierarchy-before)
 (cd $after_dir && cargo bench --bench hierarchy -- --save-baseline hierarchy-after)
 
-(cd $befor_dir && cargo bench --bench misc 2&>1 | tee -a ../misc-before.txt)
-(cd $after_dir && cargo bench --bench misc 2&>1 | tee -a ../misc-after.txt)
